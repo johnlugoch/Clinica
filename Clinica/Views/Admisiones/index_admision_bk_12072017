@@ -1,0 +1,604 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="author" content="">
+
+
+
+    <title></title>
+
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sb-admincss.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Custom CSS -->
+    <!-- Custom Fonts -->
+    <!--<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+    <style>
+        #map-canvas {
+            height: 25.000em;
+            width: 56.250em;
+        }
+
+        body {
+            color: #000000;
+            background-color: #fff;
+        }
+
+        .navbar-custom {
+            background-color: #2699a9;
+        }
+
+        .navbar-default {
+            background-color: gainsboro;
+            background-image: none;
+            background-repeat: no-repeat;
+        }
+
+        .side-nav li a {
+            color: #fff !important;
+        }
+
+            .side-nav li a:focus {
+                background-color: #9fa1b2 !important; /*evento al pasar el mouse*/
+            }
+
+        .texto {
+            color: gray;
+            font-family: Calibri;
+            font-size: 14px;
+            font-style: normal;
+        }
+
+        .mensaje {
+            color: green;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 20px;
+            font-style: normal;
+        }
+
+        .rojo {
+            color: #cc0000;
+        }
+
+        .verde {
+            color: #00cc00;
+        }
+        
+    
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <div id="wrapper">
+
+        <div>&nbsp;</div>
+
+        <!-- Navigation -->
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+
+                    <span class="sr-only">Toggle navigation</span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                </button>
+
+                <a class="navbar-brand" href="index.html">Clínica Cloud</a>
+
+            </div>
+
+            <!-- Top Menu Items -->
+
+            <ul class="nav navbar-right top-nav">
+
+                <li class="dropdown">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user_name'];?>  <b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav navbar-custom">
+                    <li><a href="#"><span class="icon-cog icon-2x"></span><span>&nbsp;Panel Control</span></a></li>
+                    <!--<li></li>-->
+
+                    <li>
+                        <a href="#" id="btn-1" data-toggle="collapse" data-target="#submenu1" aria-expanded="false"><span class="icon-user icon-2x" style="color: lightgray"></span>&nbsp;<span>Pacientes</span></a>
+                        <ul class="nav collapse" id="submenu1" role="menu" aria-labelledby="btn-1">
+                            <li>
+                                <a href="@Url.Action("Index", "Paciente")" class="menu_vertical">
+                                    Inicio&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("Paciente", "Paciente")" class="menu_vertical">
+                                    Nuevo Paciente&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ListaPaciente", "Paciente")" class="menu_vertical">
+                                    Lista de Paciente&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="@Url.Action("Index", "Admisiones")" class="menu_vertical">
+                            <span class="icon-retweet icon-2x" aria-hidden="true"></span>&nbsp;Admisiones
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Anamnesis")" class="menu_vertical">
+                            <span class="icon-plus-sign-alt icon-2x" aria-hidden="true"></span>&nbsp;Historia Clínica
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Facturacion")" class="menu_vertical">
+                            <span class="icon-bar-chart icon-2x" aria-hidden="true"></span>&nbsp;Facturación
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#" id="btn-1" data-toggle="collapse" data-target="#submenu2" aria-expanded="false"><span class="icon-cog icon-2x" style="color: lightgray"></span>&nbsp;Configuración</a>
+                        <ul class="nav collapse" id="submenu2" role="menu" aria-labelledby="btn-1">
+                            <li>
+                                <a href="@Url.Action("Index", "Empresa")" class="menu_vertical">
+                                    Empresa&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("Index", "Contrato")" class="menu_vertical">
+                                    Contratos&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Tarifa")" class="menu_vertical">
+                                    Tarifas&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Tarifa")" class="menu_vertical">
+                                    Tarifas&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Medicamentos")" class="menu_vertical">
+                                    Medicamentos&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "EPS")" class="menu_vertical">
+                                    EPS&nbsp;<span class="icon-angle-left icon-1x" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- /.navbar-collapse -->
+
+        </nav>
+
+
+
+        <div id="page-wrapper" class="js-wvalidations">
+
+            <div class="container-fluid">
+                <!-- Page Heading -->                
+
+                <!-- /.row -->              
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12" style="color: gray;font-size: 20px;">
+                        <span class="glyphicon glyphicon-plus-sign" style="color:gray;font-size: 20px;"></span> &nbsp; Admisión y Servicios
+                        <!--<div style="background-color:#ffcc66;height: 40px; text-align: left;"><font face="Tahoma" color="white" size=4>&nbsp;<span class="glyphicon glyphicon-list-alt"></span></span>&nbsp; - Reporte Consumo de Agua </font></div>-->
+                    </div>
+                    <hr />
+                </div>                                
+                
+                <ul class="nav nav-tabs ">
+                    <li class="active"><a data-toggle="tab" href="#home">Admisión</a></li>
+                    <li><a data-toggle="tab" href="#menu1">Servicios</a></li>
+                    <!--<li><a data-toggle="tab" href="#menu2">Menu 2</a></li>-->
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="row">
+                            <p>&nbsp;</p>
+                            <form role="form" id="generalForm">
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Id.Paciente</span></label>
+                                        <input type="text" class="form-control input-sm" id="historia" name="historia">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Fecha de Admisión</span></label>
+                                        <input type="date" id="fechaadm" name="fechaadm" class="form-control input-sm">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Contrato</span></label>
+                                        <select name="contrato" id="contrato" class="form-control input-sm">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Programa</span></label>
+                                        <select name="programa" id="programa" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Acompañante</span></label>
+                                        <input name="acompa" id="acompa" class="form-control input-sm">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Parentesco Acompañante</span></label>
+                                        <input name="parentesco" id="parentesco" class="form-control input-sm">
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-12">
+
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Dirección</span></label>
+                                        <input type="text" class="form-control input-sm" id="direccion" name="direccion">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Teléfono</span></label>
+                                        <input type="text" class="form-control input-sm" id="telefono" name="telefono">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Responsable</span></label>
+                                        <input type="text" class="form-control input-sm" id="responsable" name="responsable">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group col-lg-3">
+                                        <label><span class="formulario_letra">Observaciones</span></label>
+                                        <input type="text" class="form-control input-sm" id="observaciones" name="observaciones">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div id="menu1" class="tab-pane fade">
+                       
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <form role="form" id="generalForm" action="javascript:fn_agregar()">
+                                        <div class="col-lg-12">
+                                            <div class="form-group col-lg-1">
+                                                <label><span class="formulario_letra">Código</span></label>
+                                                <input type="text" class="form-control input-sm" id="codigo" name="codigo">
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                <label><span class="formulario_letra">Nombre Servicio</span></label>                                                
+                                                <input type="text" input autocomplete="off" class="form-control input-sm" id="nomservicio" name="nomservicio" placeholder="Nombre del producto">
+                                                <ul id="selectedValue"></ul>
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                <label><span class="formulario_letra">Valor Unitario</span></label>
+                                                <input type="text" class="form-control input-sm" id="valoru" name="valoru">
+                                            </div>
+                                            <div class="form-group col-lg-1">
+                                                <label><span class="formulario_letra">Cantidad</span></label>
+                                                <input type="text" class="form-control input-sm" id="cantidad" name="cantidad">
+                                            </div>
+                                            <div class="form-group col-lg-1">
+                                                <label><span class="formulario_letra">Descuento</span></label>
+                                                <input type="text" name="descuento" id="descuento" class="form-control input-sm">
+                                            </div>
+                                            <div class="form-group col-lg-1">
+                                                <label><span class="formulario_letra">Copago</span></label>
+                                                <input type="text" name="copago" id="copago" class="form-control input-sm">
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                <label><span class="formulario_letra">Total</span></label>
+                                                <input type="text" name="total" id="total" class="form-control input-sm">
+                                            </div>
+                                            <div class="form-group col-lg-1">
+                                                <label style="color:white">Adicionar</label>
+                                                <button id="agregar" type="submit" class="btn- btn-info">
+                                                    <i>Agregar</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <table id="detalle" class="tabla_titulo" border="1" style="border-color:gray">
+                                        <thead style="font-size:16px;">
+                                            <!--<tr class="bg-success">
+                                                <td>Detalle de la Compra</td>
+                                            </tr>-->
+                                            <tr class="bg-danger">
+                                                <th class="col-md-1">Codigo</th>
+                                                <th class="col-md-4">Servicio</th>
+                                                <th class="col-md-2">Valor Unitario</th>
+                                                <th class="col-md-1">Cantidad</th>
+                                                <th class="col-md-1">Descuento</th>
+                                                <th class="col-md-1">Copago</th>
+                                                <th class="col-md-2">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <p>&nbsp;</p>
+                                    <!--<table class="table">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="tabla_titulo">Subtotal:</td>                                            
+                                            <td><input style="font-size:14px; font-weight:300;" class="form-control" type="text" name="subtotal" id="subtotal"  required readonly/></td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="tabla_titulo">Descuento:</td>
+                                            <td><input style="font-size:14px; font-weight:300;" class="form-control" type="text" name="totdescuento" id="totdescuento" required readonly /></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="tabla_titulo">Copago:</td>
+                                            <td><input style="font-size:14px; font-weight:300;" class="form-control" type="text" name="totcopago" id="totcopago" required readonly /></td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="tabla_titulo"  style="font-size:14px;">Total:</td>
+                                            <td><input style="font-size:14px; font-weight:300;" class="form-control" type="text" name="tot" id="tot" required readonly /></td>
+                                        </tr>
+                                    </table> -->                                    
+                                    
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row text-right">
+                                                <div class="col-xs-10 text-right">
+                                                    Sub Total
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <b><span id="subt" name="subt"></span></b>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row text-right">
+                                                <div class="col-xs-10 text-right">
+                                                    Desuento
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <b><span id="tdes" name="tdes"></span></b>
+                                                </div>
+                                            </div>
+                                        </li>       
+                                        <li class="list-group-item">
+                                            <div class="row text-right">
+                                                <div class="col-xs-10 text-right">
+                                                    Copago
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <b><span id="tcopago" name="tcopago"></span></b>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row text-right">
+                                                <div class="col-xs-10 text-right">
+                                                    Total
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <b><span id="totalhtml" name="totalhtml"></span></b>
+                                                </div>
+                                            </div>
+                                        </li>                                 
+                                    </ul> 
+                                                                  
+                                    <button id="save" type="button" class="btn btn-success" aria-label="Left Align">
+                                        <span style="font-size: 18px" class="" aria-hidden="true"></span> Generar Factura
+                                    </button>
+                                </div>                                
+                            </div>                       
+                    </div>
+                    
+                    
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                    <div id="mensaje" class="mensaje"></div>
+                </div>
+            </div>
+
+            <p>&nbsp;</p>
+            <table id="tbl" class="table table-striped">
+                <!--Aquí añadiremos los objetos parseados del JSON -->
+                <tbody></tbody>
+            </table>
+        </div>        
+
+        <hr>
+    <!-- /#page-wrapper -->
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/main.js"></script>
+    
+    <!-- MASKEDINPUT -->    
+    <!--<script src="~/Scripts/jquery.maskedinput.js"></script>-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+
+    <!-- GRILLA AXESNET 
+    <script src="~/Scripts/jquery.anexgrid.min.js"></script>
+    <script src="~/Scripts/jquery.anexsoft-validator.js"></script>
+    <script src="~/Scripts/js-render.js"></script>-->
+
+
+    <script type="text/javascript">
+        cargarContrato();
+        cargarPrograma();
+
+        $("#save").click(function () {
+            GuardarAdmision();
+        });
+        $("#btn-agregar").click(function () {
+            var rowH = "<tr><td class='tabla_titulo'>Documento</td><td class='tabla_titulo'>Primer Apellido</td><td class='tabla_titulo'>Segundo Apellido</td><td class='tabla_titulo'>Primer Nombre</td><td class='tabla_titulo'>Segundo Nombre</td></tr>";
+            $("#tblser").append(rowH);
+        });
+
+        $('#total').on('focus', function () {
+            // lo que queramos hacer
+            multiplicar();
+        });
+
+        $('#valoru').mask("#,##0.00", { reverse: true });
+
+            
+        /* Autocomplete de producto, jquery UI */
+        $("#nomservicio").autocomplete({
+            dataType: 'JSON',
+            source: function (request, response) {
+                jQuery.ajax({
+                    url: "Admisiones/Autocomplete",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        Name: request.term
+                    },
+                    success: function (data) {
+                        //alert(data);
+                        response($.map(data, function (item) {
+                            return {
+                                value: item.nombre,
+                                id: item.codigo,
+                                //value: item.Nombre,
+                                valoru: item.valor_soat
+                               
+                            }
+                        }))
+                    }
+                })
+            },
+            select: function (e, ui) {
+                $("#codigo").val(ui.item.id);
+                $("#valoru").val(ui.item.valoru);            
+                $("#cantidad").focus();
+            }
+        })
+
+    </script>    
+
+</body>
+
+
+
+</html>
+

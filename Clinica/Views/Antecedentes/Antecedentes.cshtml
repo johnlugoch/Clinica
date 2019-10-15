@@ -1,0 +1,540 @@
+﻿
+@{
+    Layout = null;
+    var identificacion = Request.QueryString["identificacion"];
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="author" content="">
+
+
+
+    <title></title>
+
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sb-admincss.css" rel="stylesheet" />
+
+
+    <!-- Custom CSS -->
+    <!-- Custom Fonts -->
+    <!--<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+    <style>
+        #map-canvas {
+            height: 25.000em;
+            width: 56.250em;
+        }
+
+        body {
+            color: #000000;
+            background-color: #fff;
+        }
+
+        .navbar-custom {
+            background-color: #2699a9;
+        }
+
+        .navbar-default {
+            background-color: gainsboro;
+            background-image: none;
+            background-repeat: no-repeat;
+        }
+
+        .side-nav li a {
+            color: #fff !important;
+        }
+
+            .side-nav li a:focus {
+                background-color: #9fa1b2 !important; /*evento al pasar el mouse*/
+            }
+
+        .texto {
+            color: gray;
+            font-family: Calibri;
+            font-size: 14px;
+            font-style: normal;
+        }
+
+        .mensaje {
+            color: green;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 20px;
+            font-style: normal;
+        }
+
+        .rojo {
+            color: #cc0000;
+        }
+
+        .verde {
+            color: #00cc00;
+        }
+
+        .azul {
+            color: steelblue;
+        }
+
+        .headtablacolor {
+            background-color: yellowgreen;
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <div id="wrapper">
+
+        <div>&nbsp;</div>
+
+        <!-- Navigation -->
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+
+                    <span class="sr-only">Toggle navigation</span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                </button>
+
+                <a class="navbar-brand" href="index.html">Clínica Cloud</a>
+
+            </div>
+
+            <!-- Top Menu Items -->
+
+            <ul class="nav navbar-right top-nav">
+
+                <li class="dropdown">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user_name'];?>  <b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav navbar-custom">
+                    <li>@Html.ActionLink("Inicio", "Index", "Paciente")</li>
+
+                    <li>
+                        <a href="#" id="btn-1" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">Pacientes</a>
+                        <ul class="nav collapse" id="submenu1" role="menu" aria-labelledby="btn-1">
+                            <li>@Html.ActionLink("Inicio", "Index", "Paciente")</li>
+                            <li>@Html.ActionLink("Nuevo Paciente", "Paciente", "Paciente")</li>
+                            <li>@Html.ActionLink("Lista de Paciente", "ListaPaciente", "Paciente")</li>
+                            <li><a href="#">Editar Paciente</a></li>
+                            <li><a href="#">Exportar Pacientes</a></li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Consulta Médica", "Index", "Anamnesis")</li>
+                </ul>
+            </div>
+
+            <!-- /.navbar-collapse -->
+
+        </nav>
+
+
+
+        <div id="page-wrapper" class="js-wvalidations">
+
+
+
+            <div class="container-fluid">
+
+
+
+                <!-- Page Heading -->
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-2" style="color: gray;font-size: 20px;">
+                            <span class="glyphicon glyphicon-plus-sign" style="color:yellowgreen;font-size: 20px;"></span> &nbsp; Antecedentes
+                        </div>
+                            <div class="form-group col-lg-1">
+                                <label class="texto">Documento</label>
+                                <label id="identificacion" class="texto">@identificacion</label>
+                            </div>
+                            <div class="form-group col-lg-1">
+                                <label class="texto">Apellido</label>
+                                <label id="lbapellido" class="texto"></label>
+                            </div>
+                            <div class="form-group col-lg-1">
+                                <label class="texto">Nombre</label>
+                                <label id="lbnombre" class="texto"></label>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label class="texto">Fecha Nacimiento</label>
+                                <label id="lbfecha" class="texto"></label>
+                            </div>
+                            <div class="form-group col-lg-1">
+                                <label class="texto">Edad &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <label id="lbedad" class="texto"></label>
+                            </div>
+                            <div class="form-group col-lg-1">
+                                <label class="texto">Sexo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <label id="lbsexo" class="texto"></label>
+                            </div>
+                       
+                    </div>
+
+                </div>
+
+                <!-- /.row -->
+
+                
+                <hr />
+                <button type="button" class="btn btn-link">@Html.ActionLink("Anamnesis", "Index", "Anamnesis")</button>
+                <button type="button" class="btn btn-link">@Html.ActionLink("Antecedentes", "Antecedentes", "Antecedentes")</button>
+                <button type="button" class="btn btn-link">@Html.ActionLink("Examen Físico", "Index", "Examen")</button>
+                
+                <p>&nbsp;</p>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Antecedentes</div>
+                        <div class="panel-body"></div>
+
+
+                        <div class="container">
+                            <div class="row">
+                                <form role="form" id="generalForm">                                                                        
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">antecedente de hipertensión</label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_hiper" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_hiper" value="2" checked> No<br>
+                                            <input name="obs_ant_hiper" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Cardiopatía</label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_cardio" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_cardio" value="2" checked> No<br>
+                                            <input name="obs_cardio" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Infarto agudo de miocardio </label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_infarto" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_infarto" value="2" checked> No<br>
+                                            <input name="obs_infarto" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">Otras Patologías</label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <textarea id="otrapato" name="otrapato" rows="4" cols="100"></textarea>                                            
+                                        </div>
+                                        <div class="form-group col-lg-12">                                            
+                                            <input name="obs_otrapato" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">antecedente de cirugía :</label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <textarea id="ant_cirugia" name="ant_cirugia" rows="4" cols="100"></textarea>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <input name="obs_ant_cirugia" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Traumáticos: </label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_trauma" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_trauma" value="2" checked> No<br>
+                                            <input name="obs_trauma" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Toxico - Farmacologicos</label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_toxico" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_toxico" value="2" checked> No<br>
+                                            <input name="obs_toxico" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Transfusionales</label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_trans" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_trans" value="2" checked> No<br>
+                                            <input name="obs_trans" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Hospitalarios </label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_hosp" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_hosp" value="2" checked> No<br>
+                                            <input name="obs_hosp" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Alergicos</label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_alerg" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_alerg" value="2" checked> No<br>
+                                            <input name="obs_alerg" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <label class="texto">Gineco-obstetricos </label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="radio_gineco" value="1" checked> Si<br>
+                                            <input type="radio" name="radio_gineco" value="2" checked> No<br>
+                                            <input name="obs_gineco" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">Familiares-Patológicos</label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <textarea id="famipato" name="famipato" rows="4" cols="100"></textarea>
+                                        </div>                                       
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">Habitos y factores de riesgo</label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">tabaquismo : </label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="tabaco" value="ex fumador" checked> ex fumador de cigarrillo<br>
+                                            <input type="radio" name="tabaco" value="fumador empedernido" checked> fumador empedernido de cigarrillo (20-39 cigarrillos x dia)a<br>
+                                            <input type="radio" name="tabaco" value="fumador excesivo" checked> fumador excesivo de cigarrillo (mas de 40)<br>
+                                            <input type="radio" name="tabaco" value="fumador leve" checked> fumador leve de cigarrillo (1 a 9)<br>
+                                            <input type="radio" name="tabaco" value="fumador moderado" checked> fumador moderado de cigarrillo (10 a 19)<br>
+                                            <input type="radio" name="tabaco" value="fumador ocasional" checked> fumador ocasional menos de 1 cigarrillo<br>
+                                            <input type="radio" name="tabaco" value="fumador pasivo" checked> fumador pasivo<br>
+                                            <input type="radio" name="tabaco" value="no fumador" checked> No Fumador<br>
+
+
+                                        </div>
+                                        <hr />
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">conducta alimentos : </label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <input type="radio" name="alimentacion" value="ex fumador" checked> Alimentacion Normal<br>
+                                            <input type="radio" name="alimentacion" value="no fumador"> Alimentacion Anormal<br>
+                                            <input name="obs_alimentacion" type="text" size="100">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">Estrés</label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <textarea id="estres" name="estres" rows="4" cols="100"></textarea>
+                                        </div>                                        
+                                    </div>
+                                    <hr />
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-12">
+                                            <label class="texto">Otro</label>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <textarea id="otro" name="otro" rows="4" cols="100"></textarea>
+                                        </div>
+                                    </div>
+                                 </div>
+                                    
+                                </form>
+                            </div>
+                            <p>&nbsp;</p>
+
+
+                            &nbsp;&nbsp;&nbsp;
+                            <button id="save" type="button" class="btn btn-success" aria-label="Left Align">
+
+                                <span style="font-size: 18px" class="" aria-hidden="true"></span> Guardar
+
+                            </button>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+
+                            <div id="mensaje" class="mensaje"></div>
+                        </div>
+                    </div>
+
+                    <p>&nbsp;</p>
+
+
+
+
+                </div>
+                <!--<div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Antecedentes Familiares </div>
+                        <div class="panel-body">
+                            <button type="button" class="btn btn-link">@Html.ActionLink("Anamnesis", "Index", "Anamnesis")</button>
+                            <button type="button" class="btn btn-link">@Html.ActionLink("Antecedentes", "Antecedentes", "Antecedentes")</button>
+                        </div>
+                    </div>-->
+                </div>
+
+
+
+            </div><!-- /.container -->
+
+
+
+
+            <hr>
+
+
+
+
+
+
+        </div>
+
+        <!-- /#page-wrapper -->
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/main.js"></script>
+
+
+    <script type="text/javascript">        
+        obtenerDatos();
+
+        $("#save").click(function () {
+            GuardarAntecedentes();
+        });
+    </script>
+
+
+
+
+
+</body>
+
+
+
+</html>
+
+

@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="author" content="">
+
+
+
+    <title></title>
+
+
+
+    <!-- Bootstrap Core CSS -->   
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sb-admincss.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <!-- Custom Fonts -->
+    <!--<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+    <style>
+        #map-canvas {
+            height: 25.000em;
+            width: 56.250em;
+        }
+
+        body {
+            color: #000000;
+            background-color: #f2ebf0;
+        }
+
+        .navbar-custom {
+            background-color: #2699a9;
+        }
+
+        .navbar-default {
+            background-color: #cdd6e9;
+            background-image: none;
+            background-repeat: no-repeat;
+        }
+
+        .side-nav li a {
+            color: #fff !important;
+        }
+
+            .side-nav li a:focus {
+                background-color: #9fa1b2 !important; /*evento al pasar el mouse*/
+            }
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <div id="wrapper">
+
+        <div>&nbsp;</div>
+
+        <!-- Navigation -->
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+
+                    <span class="sr-only">Toggle navigation</span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                    <span class="icon-bar"></span>
+
+                </button>
+
+                <a class="navbar-brand" href="index.html">Clínica Cloud</a>
+
+            </div>
+
+            <!-- Top Menu Items -->
+
+            <ul class="nav navbar-right top-nav">
+
+                <li class="dropdown">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user_name'];?>  <b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav navbar-custom">
+                    <li><a href="#">Identificación Paciente</a></li>
+
+                    <li><a href="#">Anamnesis</a></li>
+                    <li>
+                        <a href="#" id="btn-1" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">Antecedentes</a>
+                        <ul class="nav collapse" id="submenu1" role="menu" aria-labelledby="btn-1">
+                            <li><a href="#">Link 2.1</a></li>
+                            <li><a href="#">Link 2.2</a></li>
+                            <li><a href="#">Link 2.3</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Evolucion</a></li>
+                    <li><a href="#">Examen Físico</a></li>
+                    <li><a href="#">Imágenes Adjunta</a></li>
+                    <li><a href="#">Diagnostico</a></li>
+
+                    <li><a href="#">Notas Enfermeria</a></li>
+                    <li><a href="#">Recomendaciones Médicas</a></li>
+                    <li><a href="#">Formulación</a></li>
+                    <li><a href="#">Solicitud de servicios</a></li>
+                    <li><a href="#">Referencia</a></li>
+                    <li><a href="#">Incapacidad</a></li>
+                </ul>
+            </div>
+
+            <!-- /.navbar-collapse -->
+
+        </nav>
+
+
+
+        <div id="page-wrapper" class="js-wvalidations">
+
+
+
+            <div class="container-fluid">
+
+
+
+                <!-- Page Heading -->
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <h1 class="page-header">
+
+                            <!--<div style="background-color:#ffcc66;height: 40px; text-align: left;"><font face="Tahoma" color="white" size=4>&nbsp;<span class="glyphicon glyphicon-list-alt"></span></span>&nbsp; - Reporte Consumo de Agua </font></div>-->
+
+                        </h1>
+
+                    </div>
+
+                </div>
+
+                <!-- /.row -->
+
+
+                <div class="container">
+
+                    <!--<div class="starter-template">
+                        <h1>Titulo 1</h1>
+                        <p class="lead">Texto<br></p>
+                    </div>-->
+                    <div class="row">
+
+                        <form role="form" id="generalForm">
+                            <div class="col-lg-12">
+                                <div class="form-group col-lg-2">
+                                    <label for="id" class="texto">Identificación No.</label>
+                                    <input type="text" class="form-control" id="identificacion" name="identificacion">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Tipo Doc</label>
+                                    <select name="tipodoc" id="tipodoc" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Primer Nombre</label>
+                                    <input name="primerNombre" class="form-control">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Segundo Nombre</label>
+                                    <input name="segundoNombre" class="form-control">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Primer Apellido</label>
+                                    <input name="primerApellido" class="form-control">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Segundo Apellido</label>
+                                    <input name="segundoApellido" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group col-lg-2">
+                                    <label for="id" class="texto">Fecha Nacimiento.</label>
+                                    <input type="text" class="form-control" id="fechanac" name="fechanac">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Sexo</label>
+                                    <select name="sexo" id="sexo" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="id" class="texto">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" name="direccion">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="id" class="texto">Teléfono</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Municipio</label>
+                                    <select name="municipio" id="municipio" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group col-lg-2">
+                                    <label for="id" class="texto">Barrio</label>
+                                    <input type="text" class="form-control" id="barrio" name="barrio">
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Zona</label>
+                                    <select name="zona" id="zona" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Nivel Educativo</label>
+                                    <select name="educativo" id="educativo" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Ocupación</label>
+                                    <select name="ocupacion" id="ocupacion" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="texto">Etnia</label>
+                                    <select name="etnia" id="etnia" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <p>&nbsp;</p>
+
+
+                    <table id="tbl" class="table table-striped">
+
+                        <!--Aquí añadiremos los objetos parseados del JSON -->
+
+                        <tbody></tbody>
+
+                    </table>
+
+                </div>
+
+            </div><!-- /.container -->
+
+
+
+
+            <hr>
+
+
+
+
+
+
+        </div>
+
+        <!-- /#page-wrapper -->
+
+
+
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->    
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->   
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+
+</body>
+
+
+
+</html>
+
